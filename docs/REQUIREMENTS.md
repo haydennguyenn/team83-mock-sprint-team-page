@@ -1,11 +1,17 @@
 # Team Page Requirements and Login Screen Restyling
 
 **Team:** 83
+
 **Course:** COSC2408 Programming Project 1 (2650)
+
 **Sprint:** Mock Sprint (Week 4)
+
 **Planner Card:** Requirements - Team Page Fields and Login Styling Scope
+
 **Prepared By:** Requirements / Business Analyst
+
 **Status:** Draft for PM and UX Review
+
 **Last Updated:** 7 August 2026
 
 ---
@@ -115,11 +121,9 @@ Display behaviour:
 - Between 2 and 40 characters
 - Must match one of the approved roles:
   - Project Manager
-  - Requirements
+  - Business Analyst
   - UX
   - Developer
-  - Tester
-  - Scrum Master
 
 Display behaviour:
 
@@ -140,30 +144,13 @@ Display behaviour:
 - Limited to three visible lines
 - Follows the rules described in Edge Case E2
 
-### 3.3 Supporting Fields
-
-These fields exist in the data but are not displayed to users.
-
-| Field | Purpose |
-|-------|---------|
-| `id` | Unique identifier for each team member |
-| `order` | Controls the display order of cards |
-
-### 3.4 Layout Requirements
-
-The Team Page should use a responsive card-based grid:
-
-- **Desktop:** 3 cards per row
-- **Tablet:** 2 cards per row
-- **Mobile:** 1 card per row
 
 Additional requirements:
 
 - Cards within the same row must always have equal height.
 - Short blurbs should not reduce card height.
 - By default, records are sorted by:
-  1. `order` (ascending)
-  2. `name` (alphabetically A-Z)
+  1. `name` (alphabetically A-Z)
 
 ---
 
@@ -254,13 +241,7 @@ If the photo is missing or fails to load:
 - Display an ellipsis after the second line.
 - Long unbroken strings should break within the word rather than overflow.
 
-### E6 - Missing or Duplicate Order Values
-
-- Sort tied records alphabetically by name.
-- Records without an `order` value should appear after records that have one.
-- Ordering must remain consistent across page refreshes.
-
-### E7 - No Team Members Available
+### E6 - No Team Members Available
 
 If data cannot be loaded or the list is empty:
 
@@ -268,7 +249,7 @@ If data cannot be loaded or the list is empty:
 - Do not show an empty grid.
 - Do not expose raw error messages.
 
-### E8 - Incomplete Final Row
+### E7 - Incomplete Final Row
 
 For example, four members displayed in a three-column grid:
 
@@ -276,15 +257,7 @@ For example, four members displayed in a three-column grid:
 - Card widths remain unchanged.
 - Cards must not stretch to fill unused space.
 
-### E9 - Mobile Login Experience
-
-At mobile widths:
-
-- The login form remains fully functional.
-- No horizontal scrolling should occur.
-- Tab order and field order must remain unchanged.
-
-### E10 - Login Error Behaviour
+### E8 - Login Error Behaviour
 
 Following the redesign:
 
@@ -298,10 +271,9 @@ Following the redesign:
 
 The work is considered complete when:
 
-- Every seeded team member is displayed using the fields and rules defined in this document.
-- Edge Cases E1-E10 have been tested and behave as expected.
-- The login screen matches the approved design across desktop, tablet, and mobile devices.
-- Authentication, session, and routing files show no changes in the feature branch.
+- Every team member is displayed using the fields and rules defined in this document.
+- Edge Cases E1-E8 have been tested and behave as expected.
+- The login screen matches the approved design across
 - Logging in with valid and invalid credentials produces the same outcomes as the current `main` branch.
 - All work is merged through a Pull Request and not committed directly to `main`.
 
