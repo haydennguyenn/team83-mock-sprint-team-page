@@ -4,6 +4,10 @@
 
 **New here? Read the [step-by-step guide](docs/GUIDE.md)** — it walks you from clone to shipping your first feature. The system diagrams are in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
+## Figma Designs
+
+[View Figma Wireframes](https://www.figma.com/board/6PNzfXlWjLGqHcrD3pEpS3/Login-Restyling-Wireframes?t=YLAzN07db2sdnRzv-1)
+
 ## Stack
 
 | | |
