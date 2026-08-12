@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { adminDb } from '@/lib/firebase/admin'
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Team | Digital Accounting Transformation',
@@ -41,7 +42,7 @@ const TEAM_83_MEMBERS: TeamMember[] = [
 ]
 
 export default async function TeamPage() {
-  let dbUsersMap: Record<string, any> = {}
+  const dbUsersMap: Record<string, unknown> = {}
 
   try {
     const snapshot = await adminDb.collection('users').get()
@@ -77,7 +78,7 @@ export default async function TeamPage() {
             >
               {/* 1 icon */}
               {member.photoURL ? (
-                <img
+                <Image 
                   src={member.photoURL}
                   alt={member.fullName}
                   className="mb-4 h-24 w-24 rounded-full object-cover"
