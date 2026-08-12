@@ -14,7 +14,6 @@ interface TeamMember {
   bio?: string
   photoURL?: string
 }
-
 const DEFAULT_MEMBERS: TeamMember[] = [
   {
     fullName: 'Ronith',
@@ -36,6 +35,11 @@ const DEFAULT_MEMBERS: TeamMember[] = [
     role: 'Developer',
     bio: 'Studying a Bachelor of IT, specialising in deep learning, cloud architecture and data science. Committed to leveraging analytical insights to deliver high impact solutions.',
   },
+  {
+    fullName: 'Hayden',
+    role: 'PM',
+    bio: 'Studying a Bachelor of Computer Science with a major in Cybersecurity. Alongside his technical background in Cybersecurity, AI and Machine Learning, he brings expertise from working in retail leadership and management.',
+  },
 ]
 
 export default async function TeamPage() {
@@ -50,10 +54,11 @@ export default async function TeamPage() {
   } catch (error) {
     console.error('Failed to fetch team members from Firestore:', error)
   }
+
   const displayList: TeamMember[] = [...dbMembers]
   
   DEFAULT_MEMBERS.forEach((defaultMember) => {
-    if (displayList.length < 4) {
+    if (displayList.length < 5) {
       const exists = displayList.some(
         (m) => (m.fullName || m.displayName)?.toLowerCase() === defaultMember.fullName?.toLowerCase()
       )
@@ -66,13 +71,13 @@ export default async function TeamPage() {
   return (
     <div className="min-h-[calc(100vh-3.5rem)] bg-[#0c0e5a] p-8">
       <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {displayList.slice(0, 4).map((member, index) => (
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          {displayList.slice(0, 5).map((member, index) => (
             <div
               key={member.id || index}
               className="flex flex-col items-center rounded-md bg-white p-5 shadow-lg"
             >
-              {/* 1. pic */}
+              {/* 1. icon */}
               {member.photoURL ? (
                 <img
                   src={member.photoURL}
@@ -83,21 +88,21 @@ export default async function TeamPage() {
                 <div className="mb-4 h-24 w-24 rounded-full bg-zinc-300" />
               )}
 
-              {/* 2. Full Name */}
+              {/* 2. Full Name  */}
               <div className="mb-1.5 flex w-full justify-center">
                 <span className="rounded bg-zinc-200 px-3 py-0.5 text-xs font-semibold text-zinc-800">
                   {member.fullName || member.displayName || member.email || '(Full Name)'}
                 </span>
               </div>
 
-              {/* 3. Role */}
+              {/* 3. Role  */}
               <div className="mb-4 flex w-full justify-center">
                 <span className="rounded bg-zinc-200 px-3 py-0.5 text-xs font-medium text-zinc-700">
                   {member.role || '(Role)'}
                 </span>
               </div>
 
-              {/* 4. describe */}
+              {/* 4. infro describe */}
               <div className="mt-auto w-full text-center text-xs leading-relaxed text-zinc-600">
                 {member.bio ? (
                   <p className="line-clamp-6">{member.bio}</p>
