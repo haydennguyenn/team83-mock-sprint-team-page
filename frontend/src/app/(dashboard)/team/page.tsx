@@ -7,14 +7,12 @@ export const metadata: Metadata = {
 
 interface TeamMember {
   id?: string
-  fullName?: string
-  displayName?: string
-  email?: string
-  role?: string
-  bio?: string
+  fullName: string
+  role: string
+  bio: string
   photoURL?: string
 }
-const DEFAULT_MEMBERS: TeamMember[] = [
+const TEAM_83_MEMBERS: TeamMember[] = [
   {
     fullName: 'Ronith',
     role: 'Business Analyst',
@@ -43,28 +41,28 @@ const DEFAULT_MEMBERS: TeamMember[] = [
 ]
 
 export default async function TeamPage() {
-  let dbMembers: TeamMember[] = []
+  let dbUsersMap: Record<string, any> = {}
 
   try {
     const snapshot = await adminDb.collection('users').get()
-    dbMembers = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as TeamMember[]
+    snapshot.docs.forEach((doc) => {
+      const data = doc.data()
+      const nameKey = (data.fullName || data.displayName || '').toLowerCase()
+      if (nameKey) {
+        dbUsersMap[nameKey] = data
+      }
+    })
   } catch (error) {
-    console.error('Failed to fetch team members from Firestore:', error)
+    console.error('Failed to fetch users from Firestore:', error)
   }
 
-  const displayList: TeamMember[] = [...dbMembers]
-  
-  DEFAULT_MEMBERS.forEach((defaultMember) => {
-    if (displayList.length < 5) {
-      const exists = displayList.some(
-        (m) => (m.fullName || m.displayName)?.toLowerCase() === defaultMember.fullName?.toLowerCase()
-      )
-      if (!exists) {
-        displayList.push(defaultMember)
-      }
+  const displayList = TEAM_83_MEMBERS.map((member) => {
+    const match = dbUsersMap[member.fullName.toLowerCase()]
+    return {
+      ...member,
+      photoURL: match?.photoURL || member.photoURL,
+      bio: match?.bio || member.bio,
+      role: match?.role || member.role,
     }
   })
 
@@ -72,49 +70,39 @@ export default async function TeamPage() {
     <div className="min-h-[calc(100vh-3.5rem)] bg-[#0c0e5a] p-8">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-          {displayList.slice(0, 5).map((member, index) => (
+          {displayList.map((member, index) => (
             <div
-              key={member.id || index}
+              key={index}
               className="flex flex-col items-center rounded-md bg-white p-5 shadow-lg"
             >
-              {/* 1. icon */}
+              {/* 1 icon */}
               {member.photoURL ? (
                 <img
                   src={member.photoURL}
-                  alt={member.fullName || 'Member'}
+                  alt={member.fullName}
                   className="mb-4 h-24 w-24 rounded-full object-cover"
                 />
               ) : (
                 <div className="mb-4 h-24 w-24 rounded-full bg-zinc-300" />
               )}
 
-              {/* 2. Full Name  */}
+              {/* 2. Full Name */}
               <div className="mb-1.5 flex w-full justify-center">
                 <span className="rounded bg-zinc-200 px-3 py-0.5 text-xs font-semibold text-zinc-800">
-                  {member.fullName || member.displayName || member.email || '(Full Name)'}
+                  {member.fullName}
                 </span>
               </div>
 
               {/* 3. Role  */}
               <div className="mb-4 flex w-full justify-center">
                 <span className="rounded bg-zinc-200 px-3 py-0.5 text-xs font-medium text-zinc-700">
-                  {member.role || '(Role)'}
+                  {member.role}
                 </span>
               </div>
 
-              {/* 4. infro describe */}
+              {/* 4. info describe */}
               <div className="mt-auto w-full text-center text-xs leading-relaxed text-zinc-600">
-                {member.bio ? (
-                  <p className="line-clamp-6">{member.bio}</p>
-                ) : (
-                  <div className="space-y-2">
-                    <div className="h-2 w-full rounded bg-zinc-200" />
-                    <div className="h-2 w-full rounded bg-zinc-200" />
-                    <div className="h-2 w-full rounded bg-zinc-200" />
-                    <div className="h-2 w-full rounded bg-zinc-200" />
-                    <div className="h-2 w-full rounded bg-zinc-200" />
-                  </div>
-                )}
+                <p className="line-clamp-6">{member.bio}</p>
               </div>
             </div>
           ))}
