@@ -13,6 +13,15 @@ interface TeamMember {
   bio: string
   photoURL?: string
 }
+
+interface TeamMemberData {
+  fullName?: string
+  displayName?: string
+  photoURL?: string
+  bio?: string
+  role?: string
+}
+
 const TEAM_83_MEMBERS: TeamMember[] = [
   {
     fullName: 'Ronith',
@@ -42,12 +51,12 @@ const TEAM_83_MEMBERS: TeamMember[] = [
 ]
 
 export default async function TeamPage() {
-  const dbUsersMap: Record<string, unknown> = {}
+  const dbUsersMap: Record<string, TeamMemberData> = {}
 
   try {
     const snapshot = await adminDb.collection('users').get()
     snapshot.docs.forEach((doc) => {
-      const data = doc.data()
+      const data = doc.data() as TeamMemberData
       const nameKey = (data.fullName || data.displayName || '').toLowerCase()
       if (nameKey) {
         dbUsersMap[nameKey] = data
